@@ -28,7 +28,7 @@ struct imageDetails
     int height;
     int numColourChannels;
 };
-
+//Reads Image into memory
 imageDetails loadImage(const char* filename)
 {
     
@@ -37,28 +37,25 @@ imageDetails loadImage(const char* filename)
     std::ofstream logFile("/home/ed/Documents/C++ Projects/Photoshop Clone/renderLog.txt",std::ios::app);
     if (image == nullptr)
     {
-        logFile << "Image Reading failed image failed" << std::endl;
+        logFile << "Image Reading failed" << std::endl;
     }
     
 
    return imageDetails{ image,width,height,nrChannels };
 }
-
+//Produces a texture which is then displayed by the gui
 unsigned int renderImage(const imageDetails *image_details, bool greyScale)
 {
     std::cout << "STARTING THE RENDER\n";
     std::ofstream logFile("renderLog.txt", std::ios::app);
     
-    //logFile << "RENDER FUNCTION FIRST 12 OUTPUTS \n";
-	/*
+    logFile << "RENDER FUNCTION FIRST 12 OUTPUTS \n";
     for (int i = 0; i < 12; ++i)
 	{
 		logFile << (int)image_details->image[i] << "\n";
 	}
     logFile.close();    
     
-    */
-
     std::cout << "AFTER LOGGING\n";
 	unsigned int texture;
     glGenTextures(1, &texture);
@@ -66,14 +63,14 @@ unsigned int renderImage(const imageDetails *image_details, bool greyScale)
     glBindTexture(GL_TEXTURE_2D, texture);
     GLenum err = glGetError();
     if (err != GL_NO_ERROR) {
-        //std::cout << "OpenGL Error: " << err << std::endl;
+        std::cout << "OpenGL Error: " << err << std::endl;
     }
     //opengl assumes pixel allingment of 4 it thinks image starts on a memory address of 4 as most jpegs dont without it this breaks
     //We are telling it here expect memory addresses to be a multiple of 1
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     GLenum error2 = glGetError();
     if (err != GL_NO_ERROR) {
-        //std::cout << "OpenGL Error: " << error2 << std::endl;
+        std::cout << "OpenGL Error: " << error2 << std::endl;
     }
     if (greyScale)
     {
@@ -94,23 +91,24 @@ unsigned int renderImage(const imageDetails *image_details, bool greyScale)
     }
     GLenum error3 = glGetError();
     if (err != GL_NO_ERROR) {
-        //std::cout << "OpenGL Error: " << error3 << std::endl;
+        std::cout << "OpenGL Error: " << error3 << std::endl;
     }
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     GLenum error4 = glGetError();
     if (err != GL_NO_ERROR) {
-        //std::cout << "OpenGL Error: " << error4 << std::endl;
+        std::cout << "OpenGL Error: " << error4 << std::endl;
     }
 
 
 	glGenerateMipmap(GL_TEXTURE_2D);
     GLenum error5 = glGetError();
     if (err != GL_NO_ERROR) {
-        //std::cout << "OpenGL Error: " << error5 << std::endl;
+        std::cout << "OpenGL Error: " << error5 << std::endl;
     }
 	return texture;
 }
+//Converts a char array to an unsigned int array
 unsigned int * convertToIntArray( const imageDetails* image_details)
 {
 
@@ -121,7 +119,7 @@ unsigned int * convertToIntArray( const imageDetails* image_details)
     } 
     return imageIntArray;
 }
-
+//Converts a unsigned int array to a char array
 unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale)
 {
 
@@ -146,6 +144,8 @@ unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int
     }
     return modifiedImageChar;
 }
+
+//Inverts Image e.g r -255 ,g -255,b -255 returns a textured
 unsigned char* invertImage(imageDetails* image_details)
 {
 
@@ -170,7 +170,7 @@ unsigned char* invertImage(imageDetails* image_details)
 }
 
 
-
+//Turns image greyscale returns a texture
 unsigned char* makeGreyScale(imageDetails* image_details)
 {
 	std::cout << "STARTING GREY SCALE";

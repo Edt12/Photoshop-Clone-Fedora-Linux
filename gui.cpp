@@ -53,6 +53,7 @@ using Array3DShort = std::array<std::array < std::array<short, X>, Y>, Z>;
 Array3DShort* CTHead = new Array3DShort;
 
 const char* PATH_TO_IMAGE = "/home/ed/Documents/C++ Projects/Photoshop Clone/oranges.jpg";
+
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
@@ -67,60 +68,6 @@ void APIENTRY OPENGLCALLBACK(GLenum source,
     const void* userParam) {
     std::cerr << "GL DEBUG: " << message << std::endl;
 }
-
-
-//Reads in CTHead dataset and normalises it 
-static int read()
-{
-
-    FILE* file = fopen("CThead-256cubed.bin", "rb");
-
-	//error 0 means success
-    if (file == nullptr)
-    {
-        std::cout << "Failed to read File \n";
-        return -1;
-    }
-	size_t elementsRead = fread(CTHead ->data() , sizeof(short), X * Y * Z,file);
-
-	if (elementsRead != X * Y * Z)
-    {
-        std::cout << "Read incorrect amount of data we have only read " << elementsRead << " elements";
-        fclose(file);
-        return -2;
-    }
-    std::cout << "READ DATA SUCCESSFULLY\n";
-    std::cout << (*CTHead)[0][0][0] << " First Element\n";
-
-    std::cout << "Beginning normalistation\n ";
-    short min = std::numeric_limits<short>::max();
-    short max = std::numeric_limits<short>::min();
-    for (int i = 0; i < 256; ++i)
-    {
-	    for (int k = 0; k < 256; ++k)
-	    {
-		    for (int j = 0; j < 256; ++j)
-		    {
-                if ((*CTHead)[i][j][k] < min)
-		    	{
-                    min = (*CTHead)[i][j][k];
-                }
-
-                if ((*CTHead)[i][j][k] > max)
-                {
-                    max = (*CTHead)[i][j][k];
-                }
-		    }
-	    }
-    }
-    //Expected values max is 3029 and min is -1897
-    std::cout << "EXPECTED VALUES Max 3029 Min -1897\n";
-    std::cout << "Max Correct " << ((max != 3029) ? "True" : "False") << "\n";
-    std::cout << "Min Correct " << ((min == -1897) ? "True" : "False")<< "\n";
-
-    return 1;
-}
-
 
 // Main code
 int main(int, char**)

@@ -1326,6 +1326,22 @@
 			"value" : "[/usr/lib/x86_64-linux-gnu/libOpenGL.so][/usr/lib/x86_64-linux-gnu/libGLX.so][/usr/include][c ][v()]"
 		},
 		{
+			"name" : "GITCOMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/usr/bin/git"
+		},
+		{
 			"name" : "MAKECOMMAND",
 			"properties" : 
 			[
