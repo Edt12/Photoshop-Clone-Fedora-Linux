@@ -115,7 +115,7 @@ int main(int, char**)
 
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Photoshop Clone", nullptr, nullptr);
 
 
 
@@ -184,6 +184,9 @@ int main(int, char**)
 
     int renderMode = 0;
     bool greyScale = false;
+    static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings;
+    bool openWindow = true;
+    bool use_work_area = true;
     while (!glfwWindowShouldClose(window))
 #endif
 
@@ -238,7 +241,11 @@ int main(int, char**)
             static float f = 0.0f;
             static int counter = 0;
            
-            ImGui::Begin("Hello, world!");// Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Window of Doom",&openWindow,flags);// Create a window called "Hello, world!" and append into it.
+            ImGuiViewport* viewport = ImGui::GetMainViewport();
+            ImGui::SetWindowPos(viewport -> WorkPos);
+            ImGui::SetWindowSize(viewport -> WorkSize);
+
             ImGui::Image((ImTextureID)(intptr_t)texture,ImVec2(image_details.width,image_details.height));
             ImGui::Text("OpenGL Version: %s", glGetString(GL_VERSION));
             ImGui::Text("Image has %d colour channels", image_details.numColourChannels);
