@@ -1,0 +1,62 @@
+[
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_impl_glfw.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_impl_glfw.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_impl_glfw.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_impl_glfw.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_impl_opengl3.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_impl_opengl3.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_impl_opengl3.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_impl_opengl3.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_tables.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_tables.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_tables.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_tables.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_widgets.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_widgets.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_widgets.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_widgets.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_draw.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_draw.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_draw.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_draw.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -g -o CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_demo.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_demo.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Source/imgui_demo.cpp",
+  "output": "CMakeFiles/imgui.dir/Dependancies/ImGui/Source/imgui_demo.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/cc  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -g -o CMakeFiles/PhotoshopClone.dir/Dependancies/glad/src/glad.c.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/src/glad.c\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/src/glad.c",
+  "output": "CMakeFiles/PhotoshopClone.dir/Dependancies/glad/src/glad.c.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -g -std=gnu++23 -o CMakeFiles/PhotoshopClone.dir/gui.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/gui.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/gui.cpp",
+  "output": "CMakeFiles/PhotoshopClone.dir/gui.cpp.o"
+},
+{
+  "directory": "/home/ed/Documents/C++ Projects/Photoshop Clone/build",
+  "command": "/usr/bin/c++  -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include\" -I\"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include\" -g -std=gnu++23 -o CMakeFiles/PhotoshopClone.dir/ImageManipulator.cpp.o -c \"/home/ed/Documents/C++ Projects/Photoshop Clone/ImageManipulator.cpp\"",
+  "file": "/home/ed/Documents/C++ Projects/Photoshop Clone/ImageManipulator.cpp",
+  "output": "CMakeFiles/PhotoshopClone.dir/ImageManipulator.cpp.o"
+}
+]

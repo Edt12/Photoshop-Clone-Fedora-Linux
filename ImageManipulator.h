@@ -1,0 +1,20 @@
+#pragma once
+#include <imgui.h>
+
+struct imageDetails
+{
+    unsigned char* image;
+    int width;
+    int height;
+    int numColourChannels;
+};
+
+imageDetails loadImage(const char* filename);
+
+unsigned int renderImage(const imageDetails* image_details,bool greyScale);
+
+unsigned char* invertImage(imageDetails* image_details);
+
+unsigned int* convertToIntArray(const imageDetails* image_details);
+
+unsigned char* makeGreyScale(imageDetails* image_details);

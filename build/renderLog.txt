@@ -1,0 +1,433 @@
+Image Reading failed image failed
+Image Reading failed image failed
+Image Reading failed image failed
+Image Reading failed image failed
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+Grey Scale First 12 elements
+184
+183
+184
+186
+188
+189
+187
+185
+181
+176
+171
+166
+INVERT IMAGE OUTPUT
+Value 184
+Value 183
+Value 184
+Value 186
+Value 188
+Value 189
+Value 187
+Value 185
+Value 181
+Value 176
+Value 171
+Value 166
+INVERT IMAGE OUTPUT
+Value 71
+Value 72
+Value 71
+Value 69
+Value 67
+Value 66
+Value 68
+Value 70
+Value 74
+Value 79
+Value 84
+Value 89
+INVERT IMAGE OUTPUT
+Value 184
+Value 183
+Value 184
+Value 186
+Value 188
+Value 189
+Value 187
+Value 185
+Value 181
+Value 176
+Value 171
+Value 166
+INVERT IMAGE OUTPUT
+Value 71
+Value 72
+Value 71
+Value 69
+Value 67
+Value 66
+Value 68
+Value 70
+Value 74
+Value 79
+Value 84
+Value 89
+INVERT IMAGE OUTPUT
+Value 184
+Value 183
+Value 184
+Value 186
+Value 188
+Value 189
+Value 187
+Value 185
+Value 181
+Value 176
+Value 171
+Value 166
+INVERT IMAGE OUTPUT
+Value 71
+Value 72
+Value 71
+Value 69
+Value 67
+Value 66
+Value 68
+Value 70
+Value 74
+Value 79
+Value 84
+Value 89
+Grey Scale First 12 elements
+183
+187
+184
+171
+157
+150
+145
+140
+131
+127
+122
+117
+Grey Scale First 12 elements
+184
+159
+138
+122
+102
+88
+86
+102
+96
+59
+57
+90
+Grey Scale First 12 elements
+160
+104
+94
+68
+129
+117
+174
+169
+147
+140
+168
+181
+Grey Scale First 12 elements
+119
+104
+163
+163
+122
+184
+213
+153
+175
+148
+98
+157
+Grey Scale First 12 elements
+128
+156
+180
+134
+152
+178
+136
+151
+178
+134
+151
+180
+Grey Scale First 12 elements
+154
+154
+155
+155
+153
+153
+155
+153
+154
+152
+152
+154
+INVERT IMAGE OUTPUT
+Value 154
+Value 154
+Value 155
+Value 155
+Value 153
+Value 153
+Value 155
+Value 153
+Value 154
+Value 152
+Value 152
+Value 154
+INVERT IMAGE OUTPUT
+Value 101
+Value 101
+Value 100
+Value 100
+Value 102
+Value 102
+Value 100
+Value 102
+Value 101
+Value 103
+Value 103
+Value 101
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+Grey Scale First 12 elements
+184
+183
+184
+186
+188
+189
+187
+185
+181
+176
+171
+166
+INVERT IMAGE OUTPUT
+Value 184
+Value 183
+Value 184
+Value 186
+Value 188
+Value 189
+Value 187
+Value 185
+Value 181
+Value 176
+Value 171
+Value 166
+INVERT IMAGE OUTPUT
+Value 71
+Value 72
+Value 71
+Value 69
+Value 67
+Value 66
+Value 68
+Value 70
+Value 74
+Value 79
+Value 84
+Value 89
+INVERT IMAGE OUTPUT
+Value 184
+Value 183
+Value 184
+Value 186
+Value 188
+Value 189
+Value 187
+Value 185
+Value 181
+Value 176
+Value 171
+Value 166
+Grey Scale First 12 elements
+70
+71
+71
+69
+67
+66
+68
+70
+73
+78
+84
+89
+Grey Scale First 12 elements
+70
+71
+71
+69
+67
+66
+68
+70
+73
+78
+84
+89
+INVERT IMAGE OUTPUT
+Value 70
+Value 71
+Value 71
+Value 69
+Value 67
+Value 66
+Value 68
+Value 70
+Value 73
+Value 78
+Value 84
+Value 89
+Grey Scale First 12 elements
+184
+187
+184
+171
+158
+151
+146
+141
+132
+127
+123
+117
+Grey Scale First 12 elements
+70
+71
+71
+69
+67
+66
+68
+70
+73
+78
+84
+89
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+Grey Scale First 12 elements
+70
+71
+71
+69
+67
+66
+68
+70
+73
+78
+84
+89
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+Grey Scale First 12 elements
+70
+71
+71
+69
+67
+66
+68
+70
+73
+78
+84
+89
+Grey Scale First 12 elements
+70
+67
+70
+83
+97
+103
+108
+114
+123
+127
+131
+137
