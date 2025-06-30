@@ -52,7 +52,7 @@ using Array3DShort = std::array<std::array < std::array<short, X>, Y>, Z>;
 
 Array3DShort* CTHead = new Array3DShort;
 
-const char* PATH_TO_IMAGE = "/home/ed/Documents/C++ Projects/Photoshop Clone/oranges.jpg";
+const char* PATH_TO_IMAGE = "/home/ed/Documents/C++ Projects/Photoshop Clone/debug.jpg";
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -74,7 +74,7 @@ int main(int, char**)
 {
 
 
-    imageDetails image_details = loadImage(PATH_TO_IMAGE);
+    imageDetails image_details = loadImage( PATH_TO_IMAGE);
 
 
 
@@ -226,6 +226,10 @@ int main(int, char**)
             greyScale = true;
             renderMode = 0;
             break; 
+        case 3:
+            image_details.image = addBlackToEdges(&image_details);    
+            renderMode = 0;
+            break;
         default:
 	        std::cout << "ERROR THIS SHOULD NEVER HAPPEN";
 
@@ -262,6 +266,10 @@ int main(int, char**)
                 image_details = loadImage(PATH_TO_IMAGE);
                 renderMode = 0;
                 greyScale = false;
+            }
+            if (ImGui::Button("Testing 1 Pixel Blackness"))
+            {
+                renderMode = 3;
             }
             
             ImGui::End();
@@ -301,7 +309,6 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
     glfwDestroyWindow(window);
     glfwTerminate();
     

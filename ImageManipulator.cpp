@@ -19,8 +19,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
 
-
+#define LOGFILEPATH "/home/ed/Documents/C++ Projects/Photoshop Clone/renderLog.txt"
 struct imageDetails
 {
     unsigned char* image;
@@ -28,13 +29,46 @@ struct imageDetails
     int height;
     int numColourChannels;
 };
+
+struct pixel
+{
+    unsigned int r;
+    unsigned int g;
+    unsigned int b;
+
+};
+//converts array into array of pixels
+pixel* convertToPixelArray(unsigned int* rawArray,imageDetails* imageDetails){
+    pixel* pixelArray = new pixel[imageDetails-> height * imageDetails -> width];
+    int rawArrayIndex = 0;
+    for (size_t i = 0; i < (imageDetails->height * imageDetails->width); i++)
+    {
+        pixelArray[i] =  pixel{rawArray[rawArrayIndex],rawArray[rawArrayIndex + 1],rawArray[rawArrayIndex + 2]};
+        rawArrayIndex += 3;
+    };
+    return pixelArray;
+    
+}
+
+unsigned int* convertPixelArrayToRawArray(imageDetails* imageDetails ,pixel* pixelArray){
+    unsigned int* rawArray = new unsigned int[(imageDetails->height * imageDetails->width) * 3];
+    int rawArrayIndex = 0;
+    for (size_t i = 0; i < imageDetails->height * imageDetails->width; i++)
+    {
+        rawArray[rawArrayIndex] = pixelArray[i].r;
+        rawArray[rawArrayIndex + 1] = pixelArray[i].g;
+        rawArray[rawArrayIndex + 2] = pixelArray[i].b;
+        rawArrayIndex+= 3;
+    }
+    return rawArray;
+}
 //Reads Image into memory
 imageDetails loadImage(const char* filename)
 {
     
     int width, height, nrChannels;
     unsigned char* image = stbi_load(filename, &width, &height, &nrChannels, 0);
-    std::ofstream logFile("/home/ed/Documents/C++ Projects/Photoshop Clone/renderLog.txt",std::ios::app);
+    std::ofstream logFile(LOGFILEPATH,std::ios::app);
     if (image == nullptr)
     {
         logFile << "Image Reading failed" << std::endl;
@@ -46,17 +80,9 @@ imageDetails loadImage(const char* filename)
 //Produces a texture which is then displayed by the gui
 unsigned int renderImage(const imageDetails *image_details, bool greyScale)
 {
-    std::cout << "STARTING THE RENDER\n";
-    std::ofstream logFile("renderLog.txt", std::ios::app);
+ 
+    //logFile.close();    
     
-    logFile << "RENDER FUNCTION FIRST 12 OUTPUTS \n";
-    for (int i = 0; i < 12; ++i)
-	{
-		logFile << (int)image_details->image[i] << "\n";
-	}
-    logFile.close();    
-    
-    std::cout << "AFTER LOGGING\n";
 	unsigned int texture;
     glGenTextures(1, &texture);
 
@@ -111,12 +137,14 @@ unsigned int renderImage(const imageDetails *image_details, bool greyScale)
 //Converts a char array to an unsigned int array
 unsigned int * convertToIntArray( const imageDetails* image_details)
 {
-
+    int size = 0;
     unsigned int* imageIntArray = new unsigned int[(image_details->height * image_details->width) * 3];
     for (int i = 0; i < (image_details->height * image_details -> width) * 3; ++i)
     {
+        size++;
     	imageIntArray[i] = static_cast<int> (image_details->image[i]);
     } 
+    std::cout << "SIZE " << size <<"\n";
     return imageIntArray;
 }
 //Converts a unsigned int array to a char array
@@ -124,6 +152,7 @@ unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int
 {
 
     unsigned char* modifiedImageChar = new unsigned char[(image_details->height * image_details->width) * 3];
+
     int multiplier = 3;
     if (isGreyScale)
     {
@@ -133,23 +162,23 @@ unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int
     {
 	    if (modifiedImage[i] > 255)
 	    {
-		    std::cout << "GREATER AHHHH";
-            std::cout << "VAL " <<modifiedImage[i] <<"\n";
+            std::cout << "Greater\n";
 	    }
 	    else if (modifiedImage[i] < 0)
 	    {
-            std::cout << "LESS AHHH";
+            std::cout<< "LESS";
 	    }
         modifiedImageChar[i] = static_cast<unsigned char> (modifiedImage[i]);
     }
     return modifiedImageChar;
 }
 
-//Inverts Image e.g r -255 ,g -255,b -255 returns a textured
+//Inverts Image e.g r -255 ,g -255,b -255 returns a texture
 unsigned char* invertImage(imageDetails* image_details)
 {
 
     unsigned int* imageDataInt  = convertToIntArray(image_details);
+    assert(imageDataInt != nullptr);
 
   
     for (int i = 0; i < (image_details -> height * image_details -> width) * 3; ++i)
@@ -158,7 +187,7 @@ unsigned char* invertImage(imageDetails* image_details)
     }
     
 	unsigned char* modifiedArray = convertToCharArray(image_details, imageDataInt,false);
-    std::ofstream logFile("renderLog.txt",std::ios::app);
+    std::ofstream logFile(LOGFILEPATH,std::ios::app);
     logFile << "INVERT IMAGE OUTPUT\n";
     for (int i = 0; i < 12; ++i)
     {
@@ -175,10 +204,11 @@ unsigned char* makeGreyScale(imageDetails* image_details)
 {
 	std::cout << "STARTING GREY SCALE";
     unsigned int* imageDataInt = convertToIntArray(image_details);
+    assert(imageDataInt != nullptr);
 
     unsigned int* greyScaleArray = new unsigned int[image_details -> width * image_details-> height];
 
-    std::ofstream logFile("renderLog.txt", std::ios::app);
+
     
     std::array<unsigned int, 3> rgb;
 
@@ -200,11 +230,84 @@ unsigned char* makeGreyScale(imageDetails* image_details)
             
 	    }
     }
-    logFile << "Grey Scale First 12 elements\n";
-    for (int i = 0; i < 12; ++i)
-    {
-        logFile << greyScaleArray[i] << "\n";
-    }
-    logFile.close();
+
     return convertToCharArray(image_details, greyScaleArray,true);
+}
+
+unsigned char* addBlackToEdges(imageDetails* image_details){
+    const int BLACKBORDERIMAGEWIDTH = (((image_details -> width) + 6) * image_details->numColourChannels);
+    const int BLACKBORDERIMAGEHEIGHT = (((image_details -> height) + 6) * image_details->numColourChannels); 
+
+
+
+    unsigned int * imageDataInt = convertToIntArray(image_details);
+    assert(imageDataInt != nullptr);
+
+    const int BLACKBORDERIMAGESIZE = BLACKBORDERIMAGEWIDTH * BLACKBORDERIMAGEHEIGHT;
+    const int IMAGEDATAINTSIZE = image_details->width * image_details-> height * image_details-> numColourChannels;
+    //each pixel is 3 values so to border a image with black we add 6 to its width and 6 to its height on either side
+    unsigned int * imageDataIntBlackBorder = new unsigned int[BLACKBORDERIMAGESIZE];
+
+    bool first = false;
+    bool second = false;
+    bool third = false;
+    bool fourth = false;
+    int index;
+    int rowNumber = 1;
+    int widthIndex =0;
+    
+    pixel* pixelArray = convertToPixelArray(imageDataInt,image_details );
+    unsigned int * newArray = convertPixelArrayToRawArray(image_details,pixelArray);
+    /**
+    for (index = 0; index < BLACKBORDERIMAGESIZE; index++)
+    {
+        widthIndex++;
+        if (widthIndex == BLACKBORDERIMAGEWIDTH - 3 && index > BLACKBORDERIMAGEWIDTH){
+            std::cout <<"1\n";
+            for (int i = 0; i < 6; i++)
+            {
+                 imageDataIntBlackBorder[index] = 255;
+                 if (i != 5)
+                 {
+                     index++;   
+                 }
+            
+            }
+            
+           
+            
+        }else if (index == BLACKBORDERIMAGEWIDTH){
+            for (size_t i = 0; i < 3; i++)
+            {
+                imageDataIntBlackBorder[index] = 0;
+                if (i != 2)
+                {
+                    index++;
+                }
+                
+            }
+            
+        }else if (index > (BLACKBORDERIMAGESIZE - BLACKBORDERIMAGEWIDTH) -1){
+            std::cout << "2" << std::endl;
+            imageDataIntBlackBorder[index] = 100;
+        } else if (index < BLACKBORDERIMAGEWIDTH){
+    
+            imageDataIntBlackBorder[index] = 50;
+           
+        }else{
+         imageDataIntBlackBorder[index] = imageDataInt[index - (BLACKBORDERIMAGESIZE - IMAGEDATAINTSIZE)];
+       }
+       if (widthIndex == BLACKBORDERIMAGEWIDTH - 3)
+       {
+        widthIndex = -2;
+       }
+       
+       
+    }
+    //modify width and height to allign with new width and height as 1 pixel has been added to edge of image
+    image_details ->height = image_details->height + 6;
+    image_details -> width = image_details -> width + 6;
+    */
+    return convertToCharArray(image_details,newArray,false);
+
 }

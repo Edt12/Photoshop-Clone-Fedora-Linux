@@ -259,4 +259,8 @@ CMakeFiles/PhotoshopClone.dir/ImageManipulator.cpp.o: \
  /usr/include/c++/14.3.0/x86_64-unknown-linux-gnu/bits/basic_file.h \
  /usr/include/c++/14.3.0/x86_64-unknown-linux-gnu/bits/c++io.h \
  /usr/include/c++/14.3.0/bits/fstream.tcc \
- /usr/include/c++/14.3.0/iostream
+ /usr/include/c++/14.3.0/iostream /usr/include/c++/14.3.0/vector \
+ /usr/include/c++/14.3.0/bits/stl_uninitialized.h \
+ /usr/include/c++/14.3.0/bits/stl_vector.h \
+ /usr/include/c++/14.3.0/bits/stl_bvector.h \
+ /usr/include/c++/14.3.0/bits/vector.tcc

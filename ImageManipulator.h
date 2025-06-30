@@ -18,3 +18,5 @@ unsigned char* invertImage(imageDetails* image_details);
 unsigned int* convertToIntArray(const imageDetails* image_details);
 
 unsigned char* makeGreyScale(imageDetails* image_details);
+
+unsigned char* addBlackToEdges(imageDetails* image_details);
