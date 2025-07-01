@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <imgui.h>
 
 struct imageDetails
@@ -19,4 +20,8 @@ unsigned int* convertToIntArray(const imageDetails* image_details);
 
 unsigned char* makeGreyScale(imageDetails* image_details);
 
-unsigned char* addBlackToEdges(imageDetails* image_details);
+unsigned int* addBlackToEdges(imageDetails* image_details);
+
+unsigned int* crossCorrelate(std::array<int, 9 > filter,imageDetails);
+
+unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale);

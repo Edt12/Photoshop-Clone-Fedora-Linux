@@ -2092,3 +2092,29 @@ Value 205
 Value 205
 Value 205
 Value 205
+INVERT IMAGE OUTPUT
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16

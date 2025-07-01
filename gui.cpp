@@ -52,7 +52,7 @@ using Array3DShort = std::array<std::array < std::array<short, X>, Y>, Z>;
 
 Array3DShort* CTHead = new Array3DShort;
 
-const char* PATH_TO_IMAGE = "/home/ed/Documents/C++ Projects/Photoshop Clone/debug.jpg";
+const char* PATH_TO_IMAGE = "/home/ed/Documents/C++ Projects/Photoshop Clone/oranges.jpg";
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -227,7 +227,7 @@ int main(int, char**)
             renderMode = 0;
             break; 
         case 3:
-            image_details.image = addBlackToEdges(&image_details);    
+            image_details.image = convertToCharArray(&image_details,addBlackToEdges(&image_details),false);    
             renderMode = 0;
             break;
         default:
@@ -312,6 +312,5 @@ int main(int, char**)
     glfwDestroyWindow(window);
     glfwTerminate();
     
-    delete CTHead;
     return 0;
 }

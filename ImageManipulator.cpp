@@ -1,3 +1,5 @@
+#include <cassert>
+#include <ostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <KHR/khrplatform.h>
@@ -11,7 +13,6 @@
 #include <GLES2/gl2.h>
 #endif
 #include <array>
-#include <complex>
 #include <cstdlib>
 
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
@@ -19,7 +20,7 @@
 
 #include <fstream>
 #include <iostream>
-#include <vector>
+
 
 #define LOGFILEPATH "/home/ed/Documents/C++ Projects/Photoshop Clone/renderLog.txt"
 struct imageDetails
@@ -37,14 +38,52 @@ struct pixel
     unsigned int b;
 
 };
+//Converts a char array to an unsigned int array
+unsigned int * convertToIntArray( const imageDetails* image_details)
+{
+    int size = 0;
+    unsigned int* imageIntArray = new unsigned int[(image_details->height * image_details->width) * 3];
+    for (int i = 0; i < (image_details->height * image_details -> width) * 3; ++i)
+    {
+        size++;
+    	imageIntArray[i] = static_cast<int> (image_details->image[i]);
+    } 
+    std::cout << "SIZE " << size <<"\n";
+    return imageIntArray;
+}
+
+//Overloads << operator when it is next to a pixel to ensure the values within can be printed
+std::ostream& operator<<(std::ostream& os, pixel pixel)
+{
+    os << "{" << pixel.r << ", " << pixel.g<< ", " << pixel.b << "}";
+    return os;
+}
+ 
 //converts array into array of pixels
 pixel* convertToPixelArray(unsigned int* rawArray,imageDetails* imageDetails){
     pixel* pixelArray = new pixel[imageDetails-> height * imageDetails -> width];
     int rawArrayIndex = 0;
+
     for (size_t i = 0; i < (imageDetails->height * imageDetails->width); i++)
     {
         pixelArray[i] =  pixel{rawArray[rawArrayIndex],rawArray[rawArrayIndex + 1],rawArray[rawArrayIndex + 2]};
-        rawArrayIndex += 3;
+        rawArrayIndex += 3;    
+    
+    };
+    return pixelArray;
+    
+}
+//Overload for taking in unsigned char and converting it to a c style array of pixels
+pixel* convertToPixelArray(unsigned char* rawArray,imageDetails* imageDetails){
+    unsigned int * rawArrayInt = convertToIntArray(imageDetails);
+    pixel* pixelArray = new pixel[imageDetails-> height * imageDetails -> width];
+    int rawArrayIndex = 0;
+
+    for (size_t i = 0; i < (imageDetails->height * imageDetails->width); i++)
+    {
+        pixelArray[i] =  pixel{rawArrayInt[rawArrayIndex],rawArrayInt[rawArrayIndex + 1],rawArrayInt[rawArrayIndex + 2]};
+        rawArrayIndex += 3;    
+    
     };
     return pixelArray;
     
@@ -60,8 +99,11 @@ unsigned int* convertPixelArrayToRawArray(imageDetails* imageDetails ,pixel* pix
         rawArray[rawArrayIndex + 2] = pixelArray[i].b;
         rawArrayIndex+= 3;
     }
+  
     return rawArray;
 }
+
+
 //Reads Image into memory
 imageDetails loadImage(const char* filename)
 {
@@ -134,19 +176,7 @@ unsigned int renderImage(const imageDetails *image_details, bool greyScale)
     }
 	return texture;
 }
-//Converts a char array to an unsigned int array
-unsigned int * convertToIntArray( const imageDetails* image_details)
-{
-    int size = 0;
-    unsigned int* imageIntArray = new unsigned int[(image_details->height * image_details->width) * 3];
-    for (int i = 0; i < (image_details->height * image_details -> width) * 3; ++i)
-    {
-        size++;
-    	imageIntArray[i] = static_cast<int> (image_details->image[i]);
-    } 
-    std::cout << "SIZE " << size <<"\n";
-    return imageIntArray;
-}
+
 //Converts a unsigned int array to a char array
 unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale)
 {
@@ -234,9 +264,9 @@ unsigned char* makeGreyScale(imageDetails* image_details)
     return convertToCharArray(image_details, greyScaleArray,true);
 }
 
-unsigned char* addBlackToEdges(imageDetails* image_details){
-    const int BLACKBORDERIMAGEWIDTH = (((image_details -> width) + 6) * image_details->numColourChannels);
-    const int BLACKBORDERIMAGEHEIGHT = (((image_details -> height) + 6) * image_details->numColourChannels); 
+unsigned int* addBlackToEdges(imageDetails* image_details){
+    const int BLACKBORDERIMAGEWIDTH = (((image_details -> width) + 2));
+    const int BLACKBORDERIMAGEHEIGHT = (((image_details -> height) + 2)); 
 
 
 
@@ -244,70 +274,75 @@ unsigned char* addBlackToEdges(imageDetails* image_details){
     assert(imageDataInt != nullptr);
 
     const int BLACKBORDERIMAGESIZE = BLACKBORDERIMAGEWIDTH * BLACKBORDERIMAGEHEIGHT;
-    const int IMAGEDATAINTSIZE = image_details->width * image_details-> height * image_details-> numColourChannels;
-    //each pixel is 3 values so to border a image with black we add 6 to its width and 6 to its height on either side
-    unsigned int * imageDataIntBlackBorder = new unsigned int[BLACKBORDERIMAGESIZE];
+    const int IMAGEDATAINTSIZE = image_details->width * image_details-> height;
 
-    bool first = false;
-    bool second = false;
-    bool third = false;
-    bool fourth = false;
-    int index;
-    int rowNumber = 1;
-    int widthIndex =0;
+    pixel* pixelBlackBorderArray = new pixel[BLACKBORDERIMAGESIZE];
     
-    pixel* pixelArray = convertToPixelArray(imageDataInt,image_details );
-    unsigned int * newArray = convertPixelArrayToRawArray(image_details,pixelArray);
-    /**
-    for (index = 0; index < BLACKBORDERIMAGESIZE; index++)
+    pixel* pixelArrayOriginal = convertToPixelArray(imageDataInt,image_details );
+    int originalArrayIndex = 0;
+    for (size_t y = 0; y < BLACKBORDERIMAGEHEIGHT; y++)
     {
-        widthIndex++;
-        if (widthIndex == BLACKBORDERIMAGEWIDTH - 3 && index > BLACKBORDERIMAGEWIDTH){
-            std::cout <<"1\n";
-            for (int i = 0; i < 6; i++)
+        for (size_t x = 0; x < BLACKBORDERIMAGEWIDTH; x++)
+        {
+            int index = y * BLACKBORDERIMAGEWIDTH + x;
+            if (y == 0||y == BLACKBORDERIMAGEHEIGHT - 1||x == BLACKBORDERIMAGEWIDTH -1||x == 0)
             {
-                 imageDataIntBlackBorder[index] = 255;
-                 if (i != 5)
-                 {
-                     index++;   
-                 }
-            
-            }
-            
-           
-            
-        }else if (index == BLACKBORDERIMAGEWIDTH){
-            for (size_t i = 0; i < 3; i++)
+                pixelBlackBorderArray[index] = pixel{0,0,0};//black
+            } else
             {
-                imageDataIntBlackBorder[index] = 0;
-                if (i != 2)
-                {
-                    index++;
-                }
-                
-            }
-            
-        }else if (index > (BLACKBORDERIMAGESIZE - BLACKBORDERIMAGEWIDTH) -1){
-            std::cout << "2" << std::endl;
-            imageDataIntBlackBorder[index] = 100;
-        } else if (index < BLACKBORDERIMAGEWIDTH){
-    
-            imageDataIntBlackBorder[index] = 50;
-           
-        }else{
-         imageDataIntBlackBorder[index] = imageDataInt[index - (BLACKBORDERIMAGESIZE - IMAGEDATAINTSIZE)];
-       }
-       if (widthIndex == BLACKBORDERIMAGEWIDTH - 3)
-       {
-        widthIndex = -2;
-       }
-       
-       
-    }
-    //modify width and height to allign with new width and height as 1 pixel has been added to edge of image
-    image_details ->height = image_details->height + 6;
-    image_details -> width = image_details -> width + 6;
-    */
-    return convertToCharArray(image_details,newArray,false);
+                assert(originalArrayIndex < image_details->height * image_details->width);
+                pixelBlackBorderArray[index] = pixelArrayOriginal[originalArrayIndex];
+                originalArrayIndex++;                
 
+            }
+            assert(index < BLACKBORDERIMAGESIZE);
+        }
+        
+        
+    }
+       
+    //modify width and height to allign with new width and height as 1 pixel has been added to edge of image
+    image_details ->height = image_details->height + 2;
+    image_details -> width = image_details -> width + 2;
+    unsigned int * blackBorderImageDataInt = convertPixelArrayToRawArray(image_details,pixelBlackBorderArray);
+
+
+    return blackBorderImageDataInt;
+
+}
+
+unsigned int* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDetails){
+    std::cout << "height "<< imageDetails->height<< " width" << imageDetails -> width << std::endl;
+    unsigned int* blackEdgedImageArray = addBlackToEdges(imageDetails);
+    std::cout << "new height "<< imageDetails->height<< " new width" << imageDetails -> width << std::endl;
+
+    pixel* pixelArrayOriginal = convertToPixelArray(blackEdgedImageArray,imageDetails);
+    pixel* pixelArrayNew = new pixel[(imageDetails->width * imageDetails->height )- 4];
+    int max = 0;
+    int min = 0;
+    int pixelArrayNewIndex = 0;
+    for (size_t y = 1; y < imageDetails->height - 1; y++)
+    {
+        for (size_t x = 1; x < imageDetails->width - 1; x++)
+        {
+            
+            int product = 0;
+            //multiplys by indexes and gets product around google cross correlation on images for more information
+            //find some way of improving this so it works for things larger than 3 by 3 filters
+            //for colour need the rgb and b bands
+            product += filter[0] * ((y - 1) * imageDetails->width + x -1);
+            product += filter[1] * ((y - 1) * imageDetails->width + x);
+            product += filter[2] * ((y - 1) * imageDetails->width + x + 1);
+            
+            product += filter[3] * (y  * imageDetails->width + x -1);
+            product += filter[4] * (y * imageDetails->width + x);
+            product += filter[5] * (y * imageDetails->width + x + 1);
+
+            product += filter[6] * ((y + 1) * imageDetails->width + x -1);
+            product += filter[7] * ((y + 1) * imageDetails->width + x);
+            product += filter[8] * ((y + 1) * imageDetails->width + x +1);
+            
+            pixelArrayNew[pixelArrayNewIndex] = product;
+        }
+    }
 }
