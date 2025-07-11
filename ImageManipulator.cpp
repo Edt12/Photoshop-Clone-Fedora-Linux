@@ -14,15 +14,16 @@
 #endif
 #include <array>
 #include <cstdlib>
+#include <filesystem>
 
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 #include <sys/stat.h>
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
-
-#define LOGFILEPATH "/home/ed/Documents/C++ Projects/Photoshop Clone/renderLog.txt"
+#define LOGFILEPATH "/home/ed/Documents/Photoshop-Clone-Fedora-Linux/renderLog.txt"
 struct imageDetails
 {
     unsigned char* image;
@@ -38,6 +39,15 @@ struct pixel
     unsigned int b;
 
 };
+
+struct intermediateIntPixel
+{
+    int r;
+    int g;
+    int b;
+
+};
+
 //Converts a char array to an unsigned int array
 unsigned int * convertToIntArray( const imageDetails* image_details)
 {
@@ -108,12 +118,15 @@ unsigned int* convertPixelArrayToRawArray(imageDetails* imageDetails ,pixel* pix
 imageDetails loadImage(const char* filename)
 {
     
+    std::filesystem::path imagePath = std::filesystem::current_path().parent_path()/filename;
+    std::cout << imagePath << std::endl;
     int width, height, nrChannels;
-    unsigned char* image = stbi_load(filename, &width, &height, &nrChannels, 0);
+    unsigned char* image = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
     std::ofstream logFile(LOGFILEPATH,std::ios::app);
     if (image == nullptr)
     {
         logFile << "Image Reading failed" << std::endl;
+        logFile << "Path used " << imagePath << "\n";
     }
     
 
@@ -311,38 +324,93 @@ unsigned int* addBlackToEdges(imageDetails* image_details){
 
 }
 
-unsigned int* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDetails){
+unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDetails){
     std::cout << "height "<< imageDetails->height<< " width" << imageDetails -> width << std::endl;
     unsigned int* blackEdgedImageArray = addBlackToEdges(imageDetails);
     std::cout << "new height "<< imageDetails->height<< " new width" << imageDetails -> width << std::endl;
 
     pixel* pixelArrayOriginal = convertToPixelArray(blackEdgedImageArray,imageDetails);
-    pixel* pixelArrayNew = new pixel[(imageDetails->width * imageDetails->height )- 4];
+    intermediateIntPixel* intermediatePixelArray = new intermediateIntPixel[(imageDetails->width -2)* (imageDetails->height - 2)];
+    pixel* pixelArrayOutput = new pixel[(imageDetails->width - 2) *(imageDetails -> height - 2)]; 
     int max = 0;
     int min = 0;
-    int pixelArrayNewIndex = 0;
+    int intermediatePixelArrayIndex = 0;
+    const size_t arrayComparisonSize = 4;
     for (size_t y = 1; y < imageDetails->height - 1; y++)
     {
         for (size_t x = 1; x < imageDetails->width - 1; x++)
         {
             
-            int product = 0;
+            int redProduct = 0;
+            int blueProduct = 0;
+            int greenProduct = 0;
             //multiplys by indexes and gets product around google cross correlation on images for more information
             //find some way of improving this so it works for things larger than 3 by 3 filters
-            //for colour need the rgb and b bands
-            product += filter[0] * ((y - 1) * imageDetails->width + x -1);
-            product += filter[1] * ((y - 1) * imageDetails->width + x);
-            product += filter[2] * ((y - 1) * imageDetails->width + x + 1);
-            
-            product += filter[3] * (y  * imageDetails->width + x -1);
-            product += filter[4] * (y * imageDetails->width + x);
-            product += filter[5] * (y * imageDetails->width + x + 1);
+            //for colour need the rgb and b band
+            int yIndexOffset = -1;
+            for (size_t i = 0; i < 3; i++)
+            {
+                
+                redProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x + 1))].r;
 
-            product += filter[6] * ((y + 1) * imageDetails->width + x -1);
-            product += filter[7] * ((y + 1) * imageDetails->width + x);
-            product += filter[8] * ((y + 1) * imageDetails->width + x +1);
+                redProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x))].r;
+
+                redProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x - 1))].r;
+                
+                
+                greenProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x + 1))].g;
+
+                greenProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x))].g;
+
+                greenProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x - 1))].g;
+
+
+                blueProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x + 1))].b;
+
+                blueProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x))].b;
+
+                blueProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x - 1))].b;
+                yIndexOffset++;
+            }
+            std::array<int,arrayComparisonSize> comparedValuesMax = {redProduct,greenProduct,redProduct,max};
             
-            pixelArrayNew[pixelArrayNewIndex] = product;
+            max = *std::max_element(comparedValuesMax.begin(),comparedValuesMax.end());
+            comparedValuesMax[arrayComparisonSize - 1] = min;
+
+            
+            min = *std::min_element(comparedValuesMax.begin(),comparedValuesMax.end());
+            assert(intermediatePixelArrayIndex < ((imageDetails->height - 2 )* (imageDetails->width - 2)));
+            intermediatePixelArray[intermediatePixelArrayIndex] = intermediateIntPixel{redProduct,greenProduct,blueProduct};
+            intermediatePixelArrayIndex++;
+            
         }
     }
+
+
+    //Normalisation of values to between 0 and 255
+
+    std::cout << "Min " << min << "Max " << max << std::endl; 
+
+    std::cout << "Sample Value Pre Normalised  " << intermediatePixelArray[(imageDetails->width - 4) * (imageDetails-> height - 4)].r<< std::endl;
+    
+    for (size_t i = 0; i < ((imageDetails->width - 2) * (imageDetails->height - 2)); i++)
+    {
+        intermediatePixelArray[i].r =  (intermediatePixelArray[i].r - min) * 255/(max - min);
+        intermediatePixelArray[i].g =  (intermediatePixelArray[i].g - min) * 255/(max - min);
+        intermediatePixelArray[i].b =  (intermediatePixelArray[i].b - min) * 255/(max - min);
+        
+    }
+    std::cout << "Sample Value Normalised " << intermediatePixelArray[(imageDetails->width - 4) * (imageDetails-> height - 4)].r<< std::endl;
+    for (size_t i = 0; i < ((imageDetails-> width - 2) * (imageDetails->height - 2)); i++)
+    {
+        pixelArrayOutput[i].r =  static_cast<unsigned int>(intermediatePixelArray[i].r);
+        pixelArrayOutput[i].g =  static_cast<unsigned int>(intermediatePixelArray[i].g);
+        pixelArrayOutput[i].b =  static_cast<unsigned int>(intermediatePixelArray[i].b);
+
+    }
+    std::cout << "I " << pixelArrayOriginal[0].r << "NEW " << intermediatePixelArray[0].r << std::endl;
+    imageDetails->width = imageDetails->width -2;
+    imageDetails->height = imageDetails -> height -2;
+
+    return convertToCharArray(imageDetails,convertPixelArrayToRawArray(imageDetails,pixelArrayOutput),false);
 }

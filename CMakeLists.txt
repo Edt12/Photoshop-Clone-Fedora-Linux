@@ -18,25 +18,25 @@ add_library(imgui STATIC ${IMGUI_SOURCES})
 find_package(OpenGL REQUIRED)
 target_link_libraries(imgui PUBLIC 
 OpenGL::GL
-"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/libglfw3.a"
+"${CMAKE_SOURCE_DIR}/Dependancies/GLFW/libglfw3.a"
 )
 
 add_executable(PhotoshopClone 
-"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/src/glad.c"
+"${CMAKE_SOURCE_DIR}/Dependancies/glad/src/glad.c"
 gui.cpp 
 ImageManipulator.cpp
 )
 target_include_directories(imgui PUBLIC 
-"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/ImGui/Include"
-"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include"
+"${CMAKE_SOURCE_DIR}/Dependancies/ImGui/Include"
+"${CMAKE_SOURCE_DIR}/Dependancies/GLFW/include"
 )
 
 target_include_directories(PhotoshopClone PUBLIC
-"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/glad/include"
-"/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/include"
+"${CMAKE_SOURCE_DIR}/Dependancies/glad/include"
+"${CMAKE_SOURCE_DIR}/Dependancies/GLFW/include"
 )
 message("photoshop glfw")
-target_link_libraries(PhotoshopClone PUBLIC "/home/ed/Documents/C++ Projects/Photoshop Clone/Dependancies/GLFW/libglfw3.a" )
+target_link_libraries(PhotoshopClone PUBLIC "${CMAKE_SOURCE_DIR}/Dependancies/GLFW/libglfw3.a" )
 target_link_libraries(PhotoshopClone PRIVATE imgui)
 
 get_target_property(INCLUDES PhotoshopClone INCLUDE_DIRECTORIES)

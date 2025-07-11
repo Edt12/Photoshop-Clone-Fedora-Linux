@@ -52,7 +52,7 @@ using Array3DShort = std::array<std::array < std::array<short, X>, Y>, Z>;
 
 Array3DShort* CTHead = new Array3DShort;
 
-const char* PATH_TO_IMAGE = "/home/ed/Documents/C++ Projects/Photoshop Clone/oranges.jpg";
+const char* PATH_TO_IMAGE = "oranges.jpg";
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -230,6 +230,11 @@ int main(int, char**)
             image_details.image = convertToCharArray(&image_details,addBlackToEdges(&image_details),false);    
             renderMode = 0;
             break;
+        case 4:
+            image_details.image = crossCorrelate(std::array<int,9>{-1,-2,-1,0,0,0,1,2,1},&image_details);
+            renderMode = 0;
+            break;
+
         default:
 	        std::cout << "ERROR THIS SHOULD NEVER HAPPEN";
 
@@ -267,10 +272,15 @@ int main(int, char**)
                 renderMode = 0;
                 greyScale = false;
             }
-            if (ImGui::Button("Testing 1 Pixel Blackness"))
+            if (ImGui::Button("Add 1 Pixel Black Border"))
             {
                 renderMode = 3;
             }
+            if (ImGui::Button("Cross Correlate"))
+            {
+                renderMode = 4;
+            }
+            
             
             ImGui::End();
         	
