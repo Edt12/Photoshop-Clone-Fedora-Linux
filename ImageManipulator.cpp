@@ -22,7 +22,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-
+#include <limits>
 #define LOGFILEPATH "/home/ed/Documents/Photoshop-Clone-Fedora-Linux/renderLog.txt"
 struct imageDetails
 {
@@ -348,9 +348,10 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
             //find some way of improving this so it works for things larger than 3 by 3 filters
             //for colour need the rgb and b band
             int yIndexOffset = -1;
+            //3 for 3 by 3 filters
             for (size_t i = 0; i < 3; i++)
             {
-                
+            
                 redProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x + 1))].r;
 
                 redProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x))].r;
@@ -392,7 +393,7 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
     std::cout << "Min " << min << "Max " << max << std::endl; 
 
     std::cout << "Sample Value Pre Normalised  " << intermediatePixelArray[(imageDetails->width - 4) * (imageDetails-> height - 4)].r<< std::endl;
-    
+    //MAKE ANOTHER ARRAY SO YOU CAN SEE THE CHANGE BETTER
     for (size_t i = 0; i < ((imageDetails->width - 2) * (imageDetails->height - 2)); i++)
     {
         intermediatePixelArray[i].r =  (intermediatePixelArray[i].r - min) * 255/(max - min);
@@ -408,7 +409,7 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
         pixelArrayOutput[i].b =  static_cast<unsigned int>(intermediatePixelArray[i].b);
 
     }
-    std::cout << "I " << pixelArrayOriginal[0].r << "NEW " << intermediatePixelArray[0].r << std::endl;
+    std::cout << "I " << intermediatePixelArray[0].r << " NEW " << pixelArrayOutput[0].r << std::endl;
     imageDetails->width = imageDetails->width -2;
     imageDetails->height = imageDetails -> height -2;
 

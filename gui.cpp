@@ -231,7 +231,7 @@ int main(int, char**)
             renderMode = 0;
             break;
         case 4:
-            image_details.image = crossCorrelate(std::array<int,9>{-1,-2,-1,0,0,0,1,2,1},&image_details);
+            image_details.image = crossCorrelate(std::array<int,9>{-1,-1,-1,-1,1,1,-1,1,1},&image_details);
             renderMode = 0;
             break;
 
