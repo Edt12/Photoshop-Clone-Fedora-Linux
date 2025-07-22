@@ -52,7 +52,7 @@ using Array3DShort = std::array<std::array < std::array<short, X>, Y>, Z>;
 
 Array3DShort* CTHead = new Array3DShort;
 
-const char* PATH_TO_IMAGE = "oranges.jpg";
+const char* PATH_TO_IMAGE = "test.PNG";
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -231,10 +231,17 @@ int main(int, char**)
             renderMode = 0;
             break;
         case 4:
-            image_details.image = crossCorrelate(std::array<int,9>{-1,-1,-1,-1,1,1,-1,1,1},&image_details);
+            image_details.image = crossCorrelate(std::array<int,9>{-1,-1,-1,-1,8,-1,-1,-1},&image_details);
             renderMode = 0;
             break;
 
+        case 5:
+            image_details.image = detectEdges(&image_details);
+            greyScale = true;
+            renderMode = 0;
+            break;
+            
+        
         default:
 	        std::cout << "ERROR THIS SHOULD NEVER HAPPEN";
 
@@ -276,9 +283,14 @@ int main(int, char**)
             {
                 renderMode = 3;
             }
-            if (ImGui::Button("Cross Correlate"))
+            if (ImGui::Button("Edge 1"))
             {
                 renderMode = 4;
+            }
+
+            if (ImGui::Button("Combined Edge Detector"))
+            {
+                renderMode = 5;
             }
             
             

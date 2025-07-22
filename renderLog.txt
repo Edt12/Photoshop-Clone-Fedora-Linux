@@ -31,3 +31,44 @@ Value 18
 Value 133
 Value 58
 Value 16
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+INVERT IMAGE OUTPUT
+Value 195
+Value 229
+Value 248
+Value 165
+Value 216
+Value 244
+Value 166
+Value 216
+Value 244
+Value 167
+Value 217
+Value 245
+INVERT IMAGE OUTPUT
+Value 136
+Value 59
+Value 17
+Value 137
+Value 60
+Value 18
+Value 135
+Value 60
+Value 18
+Value 133
+Value 58
+Value 16
+Image Reading failed
+Path used "/home/ed/Documents/Photoshop-Clone-Fedora-Linux/test.png"
