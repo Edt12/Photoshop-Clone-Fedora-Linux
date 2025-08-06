@@ -223,7 +223,6 @@ int main(int, char**)
             break;
         case 2:
             image_details.image = makeGreyScale(&image_details);
-            greyScale = true;
             renderMode = 0;
             break; 
         case 3:
@@ -231,13 +230,12 @@ int main(int, char**)
             renderMode = 0;
             break;
         case 4:
-            image_details.image = crossCorrelate(std::array<int,9>{-1,-1,-1,-1,8,-1,-1,-1},&image_details);
+            image_details.image = crossCorrelateBlackAndWhite(std::array<int,9>{-1,-1,-1,-1,8,-1,-1,-1},&image_details);
             renderMode = 0;
             break;
 
         case 5:
             image_details.image = detectEdges(&image_details);
-            greyScale = true;
             renderMode = 0;
             break;
             
@@ -246,7 +244,7 @@ int main(int, char**)
 	        std::cout << "ERROR THIS SHOULD NEVER HAPPEN";
 
         }
-        texture = renderImage(&image_details,greyScale);
+        texture = renderImage(&image_details);
     
 
 
@@ -272,12 +270,11 @@ int main(int, char**)
             if (ImGui::Button("GreyScale Image"))
             {
                 renderMode = 2;
-            }
+             }
             if (ImGui::Button("Revert Image"))
             {
                 image_details = loadImage(PATH_TO_IMAGE);
                 renderMode = 0;
-                greyScale = false;
             }
             if (ImGui::Button("Add 1 Pixel Black Border"))
             {

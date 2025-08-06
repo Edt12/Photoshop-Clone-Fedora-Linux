@@ -12,7 +12,7 @@ struct imageDetails
 
 imageDetails loadImage(const char* filename);
 
-unsigned int renderImage(const imageDetails* image_details,bool greyScale);
+unsigned int renderImage(const imageDetails* image_details);
 
 unsigned char* invertImage(imageDetails* image_details);
 
@@ -26,5 +26,7 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
 
 unsigned char* detectEdges(imageDetails* imageDetails);
 
+
+unsigned char* crossCorrelateBlackAndWhite(std::array<int, 9 > filter,imageDetails* imageDetails);
 
 unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale);

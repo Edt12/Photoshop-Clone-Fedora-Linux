@@ -72,3 +72,16 @@ Value 58
 Value 16
 Image Reading failed
 Path used "/home/ed/Documents/Photoshop-Clone-Fedora-Linux/test.png"
+INVERT IMAGE OUTPUT
+Value 99
+Value 111
+Value 125
+Value 101
+Value 110
+Value 125
+Value 97
+Value 104
+Value 120
+Value 83
+Value 86
+Value 101

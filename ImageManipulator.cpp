@@ -75,12 +75,12 @@ pixel* convertToPixelArray(unsigned int* rawArray,imageDetails* imageDetails){
     pixel* pixelArray = new pixel[imageDetails-> height * imageDetails -> width];
     int rawArrayIndex = 0;
 
-    for (size_t i = 0; i < (imageDetails->height * imageDetails->width); i++)
+    for (size_t i = 0; i < (imageDetails->height * imageDetails->width); i++)  
     {
         pixelArray[i] =  pixel{rawArray[rawArrayIndex],rawArray[rawArrayIndex + 1],rawArray[rawArrayIndex + 2]};
         rawArrayIndex += 3;    
     
-    };
+    }
     return pixelArray;
     
 }
@@ -95,7 +95,7 @@ pixel* convertToPixelArray(unsigned char* rawArray,imageDetails* imageDetails){
         pixelArray[i] =  pixel{rawArrayInt[rawArrayIndex],rawArrayInt[rawArrayIndex + 1],rawArrayInt[rawArrayIndex + 2]};
         rawArrayIndex += 3;    
     
-    };
+    }
     return pixelArray;
     
 }
@@ -134,7 +134,7 @@ imageDetails loadImage(const char* filename)
    return imageDetails{ image,width,height,nrChannels };
 }
 //Produces a texture which is then displayed by the gui
-unsigned int renderImage(const imageDetails *image_details, bool greyScale)
+unsigned int renderImage(const imageDetails *image_details)
 {
  
     //logFile.close();    
@@ -154,23 +154,9 @@ unsigned int renderImage(const imageDetails *image_details, bool greyScale)
     if (err != GL_NO_ERROR) {
         std::cout << "OpenGL Error: " << error2 << std::endl;
     }
-    if (greyScale)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, image_details->width, image_details->height, 0, GL_RED, GL_UNSIGNED_BYTE, image_details->image);
-    }
-    else {
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_details->width, image_details->height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_details->image);
-    }
-
-    if (greyScale)
-    {
-		//SWIZZLE IS NEEDED AS OPENGL DOES NOT HAVE A GREYSCALE MODE SO WE HAVE TO MOVE THE RED INTO ALL THE CHANNELS TO HAVE GREYSCALE MODE!!!!!
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_R, GL_RED);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_RED);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_RED);
-
-    }
+ 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_details->width, image_details->height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_details->image);
+    
     GLenum error3 = glGetError();
     if (err != GL_NO_ERROR) {
         std::cout << "OpenGL Error: " << error3 << std::endl;
@@ -192,9 +178,7 @@ unsigned int renderImage(const imageDetails *image_details, bool greyScale)
 }
 
 //Converts a unsigned int array to a char array
-unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale)
-{
-
+unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale) {
     unsigned char* modifiedImageChar = new unsigned char[(image_details->height * image_details->width) * 3];
 
     int multiplier = 3;
@@ -204,14 +188,6 @@ unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int
     }
     for (int i = 0; i < (image_details->height * image_details->width ) * multiplier ; ++i)
     {
-	    if (modifiedImage[i] > 255)
-	    {
-            std::cout << "Greater\n";
-	    }
-	    else if (modifiedImage[i] < 0)
-	    {
-            std::cout<< "LESS";
-	    }
         modifiedImageChar[i] = static_cast<unsigned char> (modifiedImage[i]);
     }
     return modifiedImageChar;
@@ -244,39 +220,25 @@ unsigned char* invertImage(imageDetails* image_details)
 
 
 //Turns image greyscale returns a texture
-unsigned char* makeGreyScale(imageDetails* image_details)
+unsigned char* makeGreyScale(imageDetails* imageDetailsInput)
 {
 	std::cout << "STARTING GREY SCALE";
-    unsigned int* imageDataInt = convertToIntArray(image_details);
-    assert(imageDataInt != nullptr);
+    assert(imageDetailsInput != nullptr);
+    //REWORK WITH PIXELS
+    pixel* pixelArray = convertToPixelArray(imageDetailsInput->image,imageDetailsInput);
 
-    unsigned int* greyScaleArray = new unsigned int[image_details -> width * image_details-> height];
-
-
-    
-    std::array<unsigned int, 3> rgb;
-
-    int counter = 0;
-    int greyScaleCounter = 0;
    
-    for (int i = 0; i < ((image_details->width * image_details->height) * 3); ++i)
+    for (int i = 0; i < ((imageDetailsInput->width * imageDetailsInput->height)); ++i)
     {
-
-        rgb[counter] = imageDataInt[i];
-        counter++;
-    	if (counter % 3 == 0)
-	    {
-            int greyScale = (rgb[0] + rgb[1] + rgb[2]) / 3;
-            
-            greyScaleArray[greyScaleCounter] = greyScale;
-            greyScaleCounter++;
-            counter = 0;
-            
-	    }
+        unsigned int greyscaleValue = (pixelArray[i].r + pixelArray[i].b + pixelArray[i].g)/3;
+        pixelArray[i] = pixel{greyscaleValue,greyscaleValue,greyscaleValue};
     }
-
-    return convertToCharArray(image_details, greyScaleArray,true);
+    
+    unsigned int * intArray = convertPixelArrayToRawArray(imageDetailsInput,pixelArray);
+    return convertToCharArray(imageDetailsInput,intArray,false);
 }
+
+
 
 unsigned int* addBlackToEdges(imageDetails* image_details){
     const int BLACKBORDERIMAGEWIDTH = (((image_details -> width) + 2));
@@ -391,7 +353,7 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
                 min = blueProduct;
                 first = false;
             }
-            std::array<int,arrayComparisonSize> comparedValuesMax = {redProduct,greenProduct,redProduct,max};
+            std::array<int,arrayComparisonSize> comparedValuesMax = {redProduct,greenProduct,blueProduct,max};
             
             max = *std::max_element(comparedValuesMax.begin(),comparedValuesMax.end());
             comparedValuesMax[arrayComparisonSize - 1] = min;
@@ -426,10 +388,23 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
 
     return convertToCharArray(imageDetails,convertPixelArrayToRawArray(imageDetails,pixelArrayOutput),false);
 }
+unsigned char* copyRedToAllPixelValues(imageDetails* imageDetailsInput){
+    pixel* pixels = convertToPixelArray(convertToIntArray(imageDetailsInput),imageDetailsInput);
+    for (size_t i = 0; i < (imageDetailsInput->width * imageDetailsInput->height); i++)
+    {
+        pixels[i] = pixel{pixels[i].r,pixels[i].r,pixels[i].r};
+    
+    }
+    unsigned int* intermediateIntArray = convertPixelArrayToRawArray(imageDetailsInput,pixels);
+    unsigned char* outputArray = convertToCharArray(imageDetailsInput,intermediateIntArray,false);
+    return outputArray;
+}
 
-unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDetails){
+unsigned char* crossCorrelateBlackAndWhite(std::array<int, 9 > filter,imageDetails* imageDetails){
     std::cout << "height "<< imageDetails->height<< " width" << imageDetails -> width << std::endl;
+    imageDetails->image = copyRedToAllPixelValues(imageDetails);
     unsigned int* blackEdgedImageArray = addBlackToEdges(imageDetails);
+    
     std::cout << "new height "<< imageDetails->height<< " new width" << imageDetails -> width << std::endl;
 
     pixel* pixelArrayOriginal = convertToPixelArray(blackEdgedImageArray,imageDetails);
@@ -472,19 +447,6 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
 
                 redProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x - 1))].r;
                 
-                
-                greenProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x + 1))].g;
-
-                greenProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x))].g;
-
-                greenProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x - 1))].g;
-
-
-                blueProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x + 1))].b;
-
-                blueProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x))].b;
-
-                blueProduct += filter[i] * pixelArrayOriginal[((y - yIndexOffset) * imageDetails->width + (x - 1))].b;
                 yIndexOffset++;
             }
 
@@ -493,7 +455,7 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
                 min = blueProduct;
                 first = false;
             }
-            std::array<int,arrayComparisonSize> comparedValuesMax = {redProduct,greenProduct,redProduct,max};
+            std::array<int,arrayComparisonSize> comparedValuesMax = {redProduct,max};
             
             max = *std::max_element(comparedValuesMax.begin(),comparedValuesMax.end());
             comparedValuesMax[arrayComparisonSize - 1] = min;
@@ -510,16 +472,12 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
     for (size_t i = 0; i < ((imageDetails->width - 2) * (imageDetails->height - 2)); i++)
     {
         normalisedPixelArray[i].r =  (intermediatePixelArray[i].r - min) * 255/(max - min);
-        normalisedPixelArray[i].g =  (intermediatePixelArray[i].g - min) * 255/(max - min);
-        normalisedPixelArray[i].b =  (intermediatePixelArray[i].b - min) * 255/(max - min);
         
     }
     std::cout << "Sample Value Normalised " << intermediatePixelArray[(imageDetails->width - 4) * (imageDetails-> height - 4)].r<< std::endl;
     for (size_t i = 0; i < ((imageDetails-> width - 2) * (imageDetails->height - 2)); i++)
     {
         pixelArrayOutput[i].r =  static_cast<unsigned int>(normalisedPixelArray[i].r);
-        pixelArrayOutput[i].g =  static_cast<unsigned int>(normalisedPixelArray[i].g);
-        pixelArrayOutput[i].b =  static_cast<unsigned int>(normalisedPixelArray[i].b);
 
     }
     std::cout << "I " << intermediatePixelArray[0].r << " NEW " << pixelArrayOutput[0].r << std::endl;
@@ -530,8 +488,9 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
 }
 
 unsigned char* detectEdges(imageDetails* imageDetailsInput){
-    
+
     imageDetailsInput->image = makeGreyScale(imageDetailsInput);
+    imageDetailsInput->image = copyRedToAllPixelValues(imageDetailsInput);
     imageDetails sobelXDetails = imageDetails{imageDetailsInput->image,imageDetailsInput->width,imageDetailsInput->height,imageDetailsInput->numColourChannels};
     imageDetails sobelYDetails = imageDetails{imageDetailsInput->image,imageDetailsInput->width,imageDetailsInput->height,imageDetailsInput->numColourChannels};
     sobelXDetails.image = crossCorrelate(std::array<int,9>{-1,0,1,-2,0,2,-1,0,1},&sobelXDetails);
@@ -548,11 +507,6 @@ unsigned char* detectEdges(imageDetails* imageDetailsInput){
     for (size_t i = 0; i < imageDetailsInput->height * imageDetailsInput->width; i++)
     {
         outputImage[i].r = sqrt((sobelXPixels[i].r * sobelXPixels[i].r) + (sobelYPixels[i].r * sobelYPixels[i].r));
-
-        outputImage[i].g = sqrt((sobelXPixels[i].g * sobelXPixels[i].g) + (sobelYPixels[i].g * sobelYPixels[i].g));
-
-        outputImage[i].b = sqrt((sobelXPixels[i].b * sobelXPixels[i].b)+ (sobelYPixels[i].b * sobelYPixels[i].b));
-
         assert(i < (imageDetailsInput->height * imageDetailsInput->width));
     }
     
