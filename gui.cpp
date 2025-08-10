@@ -230,11 +230,14 @@ int main(int, char**)
             renderMode = 0;
             break;
         case 4:
-            image_details.image = crossCorrelateBlackAndWhite(std::array<int,9>{-1,-1,-1,-1,8,-1,-1,-1},&image_details);
+            image_details.image = crossCorrelate(std::array<int,9>{-1,-1,-1,-1,8,-1,-1,-1,-1},&image_details);
             renderMode = 0;
             break;
-
         case 5:
+            image_details.image = crossCorrelate(std::array<int,9>{-1,0,1,-2,0,2,-1,0,1},&image_details);
+            renderMode = 0;
+            break;
+        case 6:
             image_details.image = detectEdges(&image_details);
             renderMode = 0;
             break;
@@ -280,15 +283,21 @@ int main(int, char**)
             {
                 renderMode = 3;
             }
-            if (ImGui::Button("Edge 1"))
+            if (ImGui::Button("Edge X"))
             {
                 renderMode = 4;
             }
 
-            if (ImGui::Button("Combined Edge Detector"))
+            if (ImGui::Button("Edge Y"))
             {
                 renderMode = 5;
             }
+            
+            if (ImGui::Button("Sobel Edge detection"))
+            {
+                renderMode = 6;
+            }
+            
             
             
             ImGui::End();

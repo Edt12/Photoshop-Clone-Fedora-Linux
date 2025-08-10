@@ -26,7 +26,6 @@ unsigned char* crossCorrelate(std::array<int, 9 > filter,imageDetails* imageDeta
 
 unsigned char* detectEdges(imageDetails* imageDetails);
 
-
 unsigned char* crossCorrelateBlackAndWhite(std::array<int, 9 > filter,imageDetails* imageDetails);
 
 unsigned char* convertToCharArray(const imageDetails* image_details,unsigned int * modifiedImage,bool isGreyScale);
