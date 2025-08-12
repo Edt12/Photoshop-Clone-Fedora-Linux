@@ -188,6 +188,7 @@ int main(int, char**)
     imageDetails image_details;
     bool imageChange = false;
     std::string stringFilePath;
+    int blurIterations = 1;
 
     while (!glfwWindowShouldClose(window))
 #endif
@@ -244,7 +245,11 @@ int main(int, char**)
             break;
         case 5:
             //blur
-            image_details.image = crossCorrelate(std::array<int,9>{1,1,1,1,1,1,1,1,1},&image_details);
+            for (size_t i = 0; i < blurIterations; i++)
+            {
+                image_details.image = crossCorrelate(std::array<int,9>{1,1,1,1,1,1,1,1,1},&image_details);
+            }
+            
             renderMode = 0;
             break;
         case 6:
@@ -299,8 +304,8 @@ int main(int, char**)
              }
             if (ImGui::Button("Revert Image"))
             {
-                //TODO FIX AFTER UPLOAD WORKS
-                //image_details = loadImage(PATH_TO_IMAGE);
+
+                image_details = loadImage(filepath);
                 renderMode = 0;
             }
             if (ImGui::Button("Add 1 Pixel Black Border"))
@@ -317,6 +322,7 @@ int main(int, char**)
                 renderMode = 5;
 
             }
+            ImGui::SliderInt("Blur Iterations",&blurIterations,1,100);
             
             if (ImGui::Button("Sobel Edge detection"))
             {

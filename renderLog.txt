@@ -55,3 +55,29 @@ Value 159
 Value 72
 Value 101
 Value 159
+INVERT IMAGE OUTPUT
+Value 72
+Value 101
+Value 159
+Value 72
+Value 101
+Value 159
+Value 72
+Value 101
+Value 159
+Value 72
+Value 101
+Value 159
+INVERT IMAGE OUTPUT
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
+Value 110
