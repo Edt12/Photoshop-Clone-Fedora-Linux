@@ -47,12 +47,11 @@
 constexpr  int X = 256;
 constexpr int Y = 256;
 constexpr int Z = 256;
-
+const char* filepath;
 using Array3DShort = std::array<std::array < std::array<short, X>, Y>, Z>;
 
 Array3DShort* CTHead = new Array3DShort;
 
-const char* PATH_TO_IMAGE = "test.PNG";
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -74,8 +73,7 @@ int main(int, char**)
 {
 
 
-    imageDetails image_details = loadImage( PATH_TO_IMAGE);
-
+    
 
 
    
@@ -164,14 +162,14 @@ int main(int, char**)
     //io.Fonts->AddFontDefault();
     //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
+    //io.Fonts->AddFontFromFileTFTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
 
     // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
+    bool show_demo_window = false;
+    bool showFilterSelection = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop
@@ -184,13 +182,18 @@ int main(int, char**)
 
     int renderMode = 0;
     bool greyScale = false;
-    static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings;
+    static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus;
     bool openWindow = true;
     bool use_work_area = true;
+    imageDetails image_details;
+    bool imageChange = false;
+    std::string stringFilePath;
+
     while (!glfwWindowShouldClose(window))
 #endif
 
     {
+
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
@@ -208,11 +211,16 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        if (imageChange){
+            image_details = loadImage(filepath);
+            imageChange = false;
+        }
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
         unsigned int texture;
+        std::array<int,9> crossCorrelationFilter;
         switch (renderMode)
         {
         case 0:
@@ -230,11 +238,12 @@ int main(int, char**)
             renderMode = 0;
             break;
         case 4:
-            image_details.image = crossCorrelate(std::array<int,9>{-1,-1,-1,-1,8,-1,-1,-1,-1},&image_details);
+            image_details.image = crossCorrelate(crossCorrelationFilter,&image_details);
             renderMode = 0;
             break;
         case 5:
-            image_details.image = crossCorrelate(std::array<int,9>{-1,0,1,-2,0,2,-1,0,1},&image_details);
+            //blur
+            image_details.image = crossCorrelate(std::array<int,9>{1,1,1,1,1,1,1,1,1},&image_details);
             renderMode = 0;
             break;
         case 6:
@@ -248,7 +257,7 @@ int main(int, char**)
 
         }
         texture = renderImage(&image_details);
-    
+        
 
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
@@ -266,6 +275,18 @@ int main(int, char**)
             ImGui::Image((ImTextureID)(intptr_t)texture,ImVec2(image_details.width,image_details.height));
             ImGui::Text("OpenGL Version: %s", glGetString(GL_VERSION));
             ImGui::Text("Image has %d colour channels", image_details.numColourChannels);
+            if (ImGui::Button("Upload File to begin editing")){
+                std::system("cd .. && kdialog --getopenfilename > filepath.txt");
+                std::ifstream pathFile("filepath.txt");
+                if (!pathFile){
+                    std::cerr << "no file found" << std::endl;
+                    
+                }
+                getline(pathFile,stringFilePath);
+                assert(stringFilePath != "");
+                filepath = stringFilePath.data();
+                imageChange = true;
+            }
             if (ImGui::Button("Invert Image"))
             {
                 renderMode = 1;
@@ -276,21 +297,23 @@ int main(int, char**)
              }
             if (ImGui::Button("Revert Image"))
             {
-                image_details = loadImage(PATH_TO_IMAGE);
+                //TODO FIX AFTER UPLOAD WORKS
+                //image_details = loadImage(PATH_TO_IMAGE);
                 renderMode = 0;
             }
             if (ImGui::Button("Add 1 Pixel Black Border"))
             {
                 renderMode = 3;
             }
-            if (ImGui::Button("Edge X"))
+            if (ImGui::Button("Cross Correlate"))
             {
-                renderMode = 4;
+                showFilterSelection = true;
             }
 
-            if (ImGui::Button("Edge Y"))
+            if (ImGui::Button("Blur"))
             {
                 renderMode = 5;
+
             }
             
             if (ImGui::Button("Sobel Edge detection"))
@@ -306,15 +329,51 @@ int main(int, char**)
         }
 
         // 3. Show another simple window.
-        if (show_another_window)
+        //arrays for storing
+        static int lineOne[3] = {0,0,0};
+        static int lineTwo[3] = {0,0,0};
+        static int lineThree[3] = {0,0,0};
+
+
+        if (showFilterSelection)
         {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
+
+            ImGui::Begin("Filter Selection", &showFilterSelection);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            //## is used to hide identifiers so all components have unique id
+            ImGui::InputInt3("##1", lineOne);
+            ImGui::InputInt3("##2", lineTwo);
+            ImGui::InputInt3("##3", lineThree);
+                
+            if (ImGui::Button("Submit")){
+                for (size_t i = 0; i < 3; i++)
+                {
+                    crossCorrelationFilter[i] = lineOne[i];
+                }
+                int lineTwoCounter = 0;
+                for (size_t i = 3; i < 6; i++)
+                {        
+                    crossCorrelationFilter[i] = lineTwo[lineTwoCounter];
+                    lineTwoCounter++;
+                }
+                
+                int lineThreeCounter = 0;
+                for (size_t i = 6; i < 9; i++)
+                {
+                    crossCorrelationFilter[i] = lineThree[lineThreeCounter];
+                    lineThreeCounter++;
+                }
+
+                for (size_t i = 0; i < crossCorrelationFilter.size(); i++)
+                {
+                    std::cout << crossCorrelationFilter[i] << std::endl;
+                }
+                
+                renderMode = 4;
+                showFilterSelection = false;
+                
+            }
             ImGui::End();
         }
-
         // Rendering
         ImGui::Render();
         int display_w, display_h;

@@ -157,18 +157,16 @@ unsigned int* convertIntermediatePixelArrayToRawArray(imageDetails* imageDetails
     return rawArray;
 }
 //Reads Image into memory
-imageDetails loadImage(const char* filename)
+imageDetails loadImage(const char* filePath)
 {
     
-    std::filesystem::path imagePath = std::filesystem::current_path().parent_path()/filename;
-    std::cout << imagePath << std::endl;
     int width, height, nrChannels;
-    unsigned char* image = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
+    unsigned char* image = stbi_load(filePath, &width, &height, &nrChannels, 0);
     std::ofstream logFile(LOGFILEPATH,std::ios::app);
     if (image == nullptr)
     {
         logFile << "Image Reading failed" << std::endl;
-        logFile << "Path used " << imagePath << "\n";
+        logFile << "Path used " << filePath << "\n";
     }
     
 

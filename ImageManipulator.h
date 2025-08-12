@@ -10,7 +10,7 @@ struct imageDetails
     int numColourChannels;
 };
 
-imageDetails loadImage(const char* filename);
+imageDetails loadImage(const char* filePath);
 
 unsigned int renderImage(const imageDetails* image_details);
 

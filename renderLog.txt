@@ -1,152 +1,18 @@
 Image Reading failed
-Path used "/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/home/ed/Documents/Photoshop-Clone-Fedora-Linux"
+Path used 
 Image Reading failed
-Path used "/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/home/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/home/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/home/oranges.jpg"
+Path used 
 Image Reading failed
-Path used "/home/ed/Documents/oranges.jpg"
-Image Reading failed
-Path used "/home/ed/Documents/oranges.jpg"
-INVERT IMAGE OUTPUT
-Value 136
-Value 59
-Value 17
-Value 137
-Value 60
-Value 18
-Value 135
-Value 60
-Value 18
-Value 133
-Value 58
-Value 16
-INVERT IMAGE OUTPUT
-Value 136
-Value 59
-Value 17
-Value 137
-Value 60
-Value 18
-Value 135
-Value 60
-Value 18
-Value 133
-Value 58
-Value 16
-INVERT IMAGE OUTPUT
-Value 195
-Value 229
-Value 248
-Value 165
-Value 216
-Value 244
-Value 166
-Value 216
-Value 244
-Value 167
-Value 217
-Value 245
-INVERT IMAGE OUTPUT
-Value 136
-Value 59
-Value 17
-Value 137
-Value 60
-Value 18
-Value 135
-Value 60
-Value 18
-Value 133
-Value 58
-Value 16
-Image Reading failed
-Path used "/home/ed/Documents/Photoshop-Clone-Fedora-Linux/test.png"
-INVERT IMAGE OUTPUT
-Value 99
-Value 111
-Value 125
-Value 101
-Value 110
-Value 125
-Value 97
-Value 104
-Value 120
-Value 83
-Value 86
-Value 101
-INVERT IMAGE OUTPUT
-Value 99
-Value 111
-Value 125
-Value 101
-Value 110
-Value 125
-Value 97
-Value 104
-Value 120
-Value 83
-Value 86
-Value 101
-INVERT IMAGE OUTPUT
-Value 183
-Value 183
-Value 183
-Value 144
-Value 144
-Value 144
-Value 151
-Value 151
-Value 151
-Value 158
-Value 158
-Value 158
-INVERT IMAGE OUTPUT
-Value 168
-Value 168
-Value 168
-Value 131
-Value 131
-Value 131
-Value 122
-Value 122
-Value 122
-Value 124
-Value 124
-Value 124
-INVERT IMAGE OUTPUT
-Value 111
-Value 111
-Value 111
-Value 112
-Value 112
-Value 112
-Value 107
-Value 107
-Value 107
-Value 90
-Value 90
-Value 90
-INVERT IMAGE OUTPUT
-Value 183
-Value 183
-Value 183
-Value 144
-Value 144
-Value 144
-Value 151
-Value 151
-Value 151
-Value 158
-Value 158
-Value 158
+Path used 
