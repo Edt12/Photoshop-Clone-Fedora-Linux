@@ -16,3 +16,42 @@ Image Reading failed
 Path used 
 Image Reading failed
 Path used 
+INVERT IMAGE OUTPUT
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+Value 0
+INVERT IMAGE OUTPUT
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+Value 255
+INVERT IMAGE OUTPUT
+Value 72
+Value 101
+Value 159
+Value 72
+Value 101
+Value 159
+Value 72
+Value 101
+Value 159
+Value 72
+Value 101
+Value 159

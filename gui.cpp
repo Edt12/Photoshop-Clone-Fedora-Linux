@@ -212,6 +212,7 @@ int main(int, char**)
         ImGui::NewFrame();
 
         if (imageChange){
+            std::cout << "changing image" << std::endl;
             image_details = loadImage(filepath);
             imageChange = false;
         }
@@ -276,7 +277,7 @@ int main(int, char**)
             ImGui::Text("OpenGL Version: %s", glGetString(GL_VERSION));
             ImGui::Text("Image has %d colour channels", image_details.numColourChannels);
             if (ImGui::Button("Upload File to begin editing")){
-                std::system("cd .. && kdialog --getopenfilename > filepath.txt");
+                std::system("cd .. && kdialog --getopenfilename > build/filepath.txt");
                 std::ifstream pathFile("filepath.txt");
                 if (!pathFile){
                     std::cerr << "no file found" << std::endl;
@@ -284,7 +285,8 @@ int main(int, char**)
                 }
                 getline(pathFile,stringFilePath);
                 assert(stringFilePath != "");
-                filepath = stringFilePath.data();
+                filepath = stringFilePath.c_str();
+                std::cout << filepath << std::endl;
                 imageChange = true;
             }
             if (ImGui::Button("Invert Image"))
