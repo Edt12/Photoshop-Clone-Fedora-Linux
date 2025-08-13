@@ -1,8 +1,7 @@
 **An image editor which aims to emulate some of photoshops features mainly using cross correlation**
+This project was written in C++,OpenGL and ImGui and uses stbi image to load and export the images
+**Features**
 
-<img width="1367" height="659" alt="image" src="https://github.com/user-attachments/assets/38759614-e54a-4250-8b42-076f2bde9211" />
-
-Features
 -Sobel edge detection
 <img width="1396" height="675" alt="image" src="https://github.com/user-attachments/assets/c6ea61c8-6694-4f36-a5bb-6970afd4da72" />
 
